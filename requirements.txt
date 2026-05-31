@@ -1,0 +1,11 @@
+aiogram
+dotenv
+datetime
+aiohttp
+aiosqlite
+aiogram
+python-decouple
+sqlalchemy
+alembic
+black
+pydantic-settings
