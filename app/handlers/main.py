@@ -86,8 +86,9 @@ async def hi(message: BusinessMessagesDeleted, bot: Bot):
 @main_router.edited_business_message()
 async def hi(message: Message, bot: Bot):
     old_msg = await get_message(message_id=message.message_id)
+    text = message.text or message.caption
     if old_msg:
-        new_msg = await create_message(message_id=message.message_id, text=message.text, user_id=message.from_user.id)
+        new_msg = await create_message(message_id=message.message_id, text=text, user_id=message.from_user.id)
         await bot.send_message(chat_id=admin_id, text=f"""Пользователь {old_msg.user.fullname} @{old_msg.user.username} изменил сообщение
 <blockquote>{old_msg.text}</blockquote>
 на
