@@ -1,12 +1,15 @@
-async def send_message_user(bot, user_id, content_type, content_text=None, file_id=None, kb=None):
+async def send_message_user(bot, user_id, content_type, content_text=None, file_id=None):
     match content_type:
-        case 'text': await bot.send_message(chat_id=user_id, text=content_text, reply_markup=kb)
-        case 'photo': await bot.send_photo(chat_id=user_id, photo=file_id, caption=content_text, reply_markup=kb)
-        case 'document': await bot.send_document(chat_id=user_id, document=file_id, caption=content_text, reply_markup=kb)
-        case 'video': await bot.send_video(chat_id=user_id, video=file_id, caption=content_text, reply_markup=kb)
-        case 'audio': await bot.send_audio(chat_id=user_id, audio=file_id, caption=content_text, reply_markup=kb)
-        case 'voice': await bot.send_voice(chat_id=user_id, voice=file_id, caption=content_text, reply_markup=kb)
-        case 'video_note': await bot.send_video_note(chat_id=user_id, video_note=file_id, reply_markup=kb)
+        case 'text': await bot.send_message(chat_id=user_id, text=content_text)
+        case 'photo': await bot.send_photo(chat_id=user_id, photo=file_id, caption=content_text)
+        case 'document': await bot.send_document(chat_id=user_id, document=file_id, caption=content_text)
+        case 'video': await bot.send_video(chat_id=user_id, video=file_id, caption=content_text)
+        case 'audio': await bot.send_audio(chat_id=user_id, audio=file_id, caption=content_text)
+        case 'voice': await bot.send_voice(chat_id=user_id, voice=file_id, caption=content_text)
+        case 'video_note':
+            if content_text:
+                msg = await bot.send_message(chat_id=user_id, text=content_text)
+            await bot.send_video_note(chat_id=user_id, video_note=file_id, reply_to_message_id= msg.message_id)
 
 def get_content_info(message):
     content_type = None

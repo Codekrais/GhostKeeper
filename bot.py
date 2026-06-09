@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 import asyncio
 from app.handlers.main import main_router
-from app.handlers.admin import admin_router
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
 
@@ -16,7 +15,7 @@ dp = Dispatcher()
 async def main():
     try:
         await bot.delete_webhook(drop_pending_updates=True)
-        dp.include_routers(main_router, admin_router)
+        dp.include_routers(main_router)
         await dp.start_polling(bot)
     finally:
         await bot.session.close()

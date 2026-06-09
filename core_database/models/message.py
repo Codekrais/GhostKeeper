@@ -18,7 +18,6 @@ class Message(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.tg_id"), nullable=False)
     user: Mapped["User"] = relationship("User", back_populates="messages")
     text: Mapped[str] = mapped_column(nullable=True, default="", server_default="")
-    video: Mapped[str] = mapped_column(nullable=True, default="", server_default="")
-    audio: Mapped[str] = mapped_column(nullable=True, default="", server_default="")
-    photo: Mapped[str] = mapped_column(nullable=True, default="", server_default="")
+    type: Mapped[str] = mapped_column(nullable=True, default="", server_default="")
+    file_id: Mapped[str] = mapped_column(nullable=True, default="", server_default="")
 

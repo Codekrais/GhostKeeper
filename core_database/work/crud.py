@@ -7,6 +7,12 @@ from core_database.models import Message, User
 from core_database.models import db_helper
 from sqlalchemy.exc import SQLAlchemyError
 
+from datetime import datetime
+
+def current_time():
+    current_time = datetime.now()
+    return current_time.strftime("%Y-%m-%d %H:%M:%S")
+
 def connection(func):
     async def wrapper(*args, **kwargs):
         async with db_helper.Session_factory() as session:
@@ -38,25 +44,27 @@ async def create_message(session, **kwargs) -> Message | None:
         session.add(new_message)
         await session.commit()
         # await session.refresh(new_message)
-        print(f"Сообщение {kwargs.get('message_id')} создано\n")
+        print(f"[{current_time()}] Сообщение {kwargs.get('message_id')} создано")
         return message
     else:
         message.text = kwargs.get('text')
+        message.type = kwargs.get('type')
+        message.file_id = kwargs.get('file_id')
         await session.commit()
-        print(f"Сообщение {kwargs.get('message_id')} обновлено\n")
+        print(f"[{current_time()}] Сообщение {kwargs.get('message_id')} обновлено")
         return message
 
 @connection
 async def delete_message(session, **kwargs) -> Message | None:
     message_id = kwargs.get('message_id')
     if not message_id:
-        print(f"Сообщение {kwargs.get('message_id')} не найдено\n")
+        print(f"[{current_time()}] Сообщение {kwargs.get('message_id')} не найдено")
         return None
     message = await session.scalar(select(Message).filter_by(message_id=message_id))
     if message:
         await session.delete(message)
         await session.commit()
-        print(f"Сообщение {kwargs.get('message_id')} удалено\n")
+        print(f"[{current_time()}] Сообщение {kwargs.get('message_id')} удалено")
         return message
     return None
 
@@ -68,13 +76,13 @@ async def create_user(session, **kwargs) -> User | None:
         session.add(new_user)
         await session.commit()
         # await session.refresh(new_message)
-        print(f"Пользователь {kwargs.get('tg_id')} добавлен\n")
+        print(f"[{current_time()}] Пользователь {kwargs.get('tg_id')} добавлен")
         return user
 
     else:
         user.username = kwargs.get('username')
         user.fullname = kwargs.get('fullname')
-        print(f"Пользователь {kwargs.get('tg_id')} обновлен\n")
+        print(f"[{current_time()}] Пользователь {kwargs.get('tg_id')} обновлен")
         await session.commit()
 
 @connection
