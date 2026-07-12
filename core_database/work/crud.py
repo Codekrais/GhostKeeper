@@ -47,9 +47,9 @@ async def create_message(session, **kwargs) -> Message | None:
         print(f"[{current_time()}] Сообщение {kwargs.get('message_id')} создано")
         return message
     else:
-        message.text = kwargs.get('text')
-        message.type = kwargs.get('type')
-        message.file_id = kwargs.get('file_id')
+        message.text = new_message.text
+        message.type = new_message.type
+        message.file_id = new_message.file_id
         await session.commit()
         print(f"[{current_time()}] Сообщение {kwargs.get('message_id')} обновлено")
         return message
