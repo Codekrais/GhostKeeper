@@ -88,7 +88,8 @@ async def hi(message: Message, bot: Bot):
     old_msg = await get_message(message_id=message.message_id)
     text = message.text or message.caption
     if old_msg:
-        new_msg = await create_message(message_id=message.message_id, text=text, user_id=message.from_user.id, type=message.get("content_type", ""), file_id=message.get("file_id",""))
+        info = get_content_info(message)
+        new_msg = await create_message(message_id=message.message_id, text=text, user_id=info.from_user.id, type=info.get("content_type", ""), file_id=info.get("file_id",""))
         await bot.send_message(chat_id=admin_id, text=f"""Пользователь {old_msg.user.fullname} @{old_msg.user.username} изменил сообщение
 <blockquote>{old_msg.text}</blockquote>
 на
