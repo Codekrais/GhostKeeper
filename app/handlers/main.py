@@ -29,7 +29,7 @@ async def hi(message: Message, bot: Bot):
     fullname = message.from_user.full_name
     message_id = message.message_id
     text = message.text or message.caption
-    if ("⠀" in text) and (tg_id == admin_id):
+    if text and ("⠀" in text) and (tg_id == admin_id):
         if message.reply_to_message.photo:
             file_id = message.reply_to_message.photo[-1].file_id
             photo_buffer = io.BytesIO()
